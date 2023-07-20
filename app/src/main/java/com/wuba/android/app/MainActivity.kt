@@ -5,10 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.google.zxing.BarcodeFormat
-import com.google.zxing.DecodeHintType
-import com.google.zxing.client.android.CaptureActivity
-import com.google.zxing.client.android.Intents
 import com.wuba.android.app.opengl.OpenGLActivity
 import com.wuba.android.app.utis.ToastAbility
 
@@ -31,20 +27,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
 
     private fun doScanQR() {
-        val intent = Intent(this, CaptureActivity::class.java)
-        intent.action = Intents.Scan.ACTION
-        intent.putExtra(Intents.Scan.RESULT_DISPLAY_DURATION_MS, 80L)
-        //扫码类型
-        //扫码类型
-        val formats = BarcodeFormat.QR_CODE.toString()
-        intent.putExtra(Intents.Scan.FORMATS, formats)
-        //扫码hint
-        val bundle = Bundle()
-        bundle.putString(DecodeHintType.CHARACTER_SET.name, "utf-8")
-        bundle.putBoolean(DecodeHintType.TRY_HARDER.name, java.lang.Boolean.TRUE)
-        bundle.putString(DecodeHintType.POSSIBLE_FORMATS.name, BarcodeFormat.QR_CODE.toString())
-        intent.putExtras(bundle)
-        scanLauncher.launch(intent)
+
     }
 
     override fun onClick(v: View?) {

@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "AndroidApplication"
-include ':app',':vrlib',"ZXing"
+include ':app'

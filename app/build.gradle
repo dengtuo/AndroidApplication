@@ -1,0 +1,50 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+apply {
+    from "${rootDir.path}/config.gradle"
+}
+
+android {
+    namespace 'com.wuba.android.app'
+    compileSdk configuration.compileSdk
+    defaultConfig {
+        applicationId "com.wuba.android.app"
+        minSdk configuration.minSdk
+        targetSdk configuration.targetSdk
+        versionCode configuration.versionCode
+        versionName configuration.versionName
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        viewBinding true
+    }
+
+    aaptOptions {
+        noCompress "mp4"
+    }
+}
+
+dependencies {
+
+    implementation androidXDependencies.material
+    implementation androidXDependencies.appcompat
+
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    implementation project(path: ':vrlib')
+    implementation project(path: ':ZXing')
+}

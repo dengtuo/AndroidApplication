@@ -1,0 +1,37 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+apply {
+    from "${rootDir.path}/config.gradle"
+}
+
+android {
+    namespace 'com.google.zxing'
+    compileSdk configuration.compileSdk
+    defaultConfig {
+        minSdk configuration.minSdk
+        targetSdk configuration.targetSdk
+        versionCode configuration.versionCode
+        versionName configuration.versionName
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility compileConfig.sourceCompatibility
+        targetCompatibility compileConfig.targetCompatibility
+    }
+    kotlinOptions {
+        jvmTarget = kotlinOptionsConfig.jvmTarget
+    }
+}
+
+dependencies {
+
+}

@@ -1,0 +1,26 @@
+apply plugin: 'com.android.library'
+apply {
+    from "${rootDir.path}/config.gradle"
+}
+
+android {
+    namespace 'com.asha.vrlib'
+    compileSdk configuration.compileSdk
+    defaultConfig {
+        minSdk configuration.minSdk
+        targetSdk configuration.targetSdk
+        versionCode configuration.versionCode
+        versionName configuration.versionName
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+}

@@ -22,7 +22,7 @@ class SkySphere(private val radius: Float) {
     private var mTextureCoords: FloatBuffer? = null
 
     init {
-        calculateAttribute()
+        calculateSphereVertices()
     }
 
 

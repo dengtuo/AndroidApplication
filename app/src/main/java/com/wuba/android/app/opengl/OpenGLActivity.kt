@@ -28,7 +28,7 @@ class OpenGLActivity : AppCompatActivity() {
         Glide.with(this)
             .asBitmap()
             .override(4096, 4096/2)
-            .load("file:///android_asset/1.jpg")
+            .load("file:///android_asset/2.jpg")
             .into(object : CustomTarget<Bitmap>() {
                 override fun onResourceReady(
                     resource: Bitmap,

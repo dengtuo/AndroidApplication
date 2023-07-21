@@ -1,4 +1,4 @@
-package com.wuba.android.app.opengl
+package com.dengtuo.android.app.opengl
 
 /**
  * Indicates the rotation inertia

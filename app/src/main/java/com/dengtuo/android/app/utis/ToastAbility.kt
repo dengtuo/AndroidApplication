@@ -1,10 +1,10 @@
-package com.wuba.android.app.utis
+package com.dengtuo.android.app.utis
 
 import android.text.TextUtils
 import android.util.Log
 import android.view.Gravity
 import android.widget.Toast
-import com.wuba.android.app.AppEnvironment
+import com.dengtuo.android.app.AppEnvironment
 
 object ToastAbility {
     private const val TAG: String = "ToastAbility"

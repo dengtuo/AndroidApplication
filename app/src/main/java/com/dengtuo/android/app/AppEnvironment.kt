@@ -1,4 +1,4 @@
-package com.wuba.android.app
+package com.dengtuo.android.app
 
 import android.app.Application
 

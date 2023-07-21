@@ -1,4 +1,4 @@
-package com.wuba.android.app.opengl
+package com.dengtuo.android.app.opengl
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -8,7 +8,6 @@ import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
-import android.widget.Scroller
 import kotlin.math.abs
 
 class GLSurfaceRenderView : GLSurfaceView {

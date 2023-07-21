@@ -1,12 +1,13 @@
-package com.wuba.android.app
+package com.dengtuo.android.app
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.wuba.android.app.opengl.OpenGLActivity
-import com.wuba.android.app.utis.ToastAbility
+import com.dengtuo.android.app.opengl.OpenGLActivity
+import com.dengtuo.android.app.utis.ToastAbility
+import com.dengtuo.android.app.R
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when(v?.id){
-            R.id.tv_opengl->{
+            R.id.tv_opengl ->{
                 val intent = Intent(this, OpenGLActivity::class.java)
                 startActivity(intent)
             }

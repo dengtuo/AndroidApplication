@@ -22,19 +22,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Wuba.Global"
+        android:theme="@style/Theme.DengTuo.Global"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".vr.VRVideoActivity"
-            android:exported="false" />
-        <activity
-            android:name=".vr.VRActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
+            android:name="com.dengtuo.android.app.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.Wuba.Global.NoActionBar">
+            android:theme="@style/Theme.DengTuo.Global.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,9 +40,9 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.wuba.android.app.opengl.OpenGLActivity"
+            android:name="com.dengtuo.android.app.opengl.OpenGLActivity"
             android:exported="false"
-            android:theme="@style/Theme.Wuba.Global.NoActionBar" />
+            android:theme="@style/Theme.DengTuo.Global.NoActionBar" />
     </application>
 
 </manifest>

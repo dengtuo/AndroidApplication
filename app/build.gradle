@@ -7,10 +7,10 @@ apply {
 }
 
 android {
-    namespace 'com.wuba.android.app'
+    namespace 'com.dengtuo.android.app'
     compileSdk configuration.compileSdk
     defaultConfig {
-        applicationId "com.wuba.android.app"
+        applicationId "com.dengtuo.android.app"
         minSdk configuration.minSdk
         targetSdk configuration.targetSdk
         versionCode configuration.versionCode

@@ -1,8 +1,9 @@
-package com.wuba.android.app
+package com.dengtuo.android.app
 
 import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
+import com.dengtuo.android.app.BuildConfig
 
 object InitProcessManager : IModuleApplication {
     override fun onCreate(application: Application) {

@@ -1,4 +1,4 @@
-package com.wuba.android.app.opengl
+package com.dengtuo.android.app.opengl
 
 import android.graphics.Bitmap
 import android.opengl.GLES20

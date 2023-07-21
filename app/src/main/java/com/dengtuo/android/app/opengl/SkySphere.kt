@@ -1,7 +1,6 @@
-package com.wuba.android.app.opengl
+package com.dengtuo.android.app.opengl
 
 import android.opengl.GLES20
-import android.util.Pair
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer

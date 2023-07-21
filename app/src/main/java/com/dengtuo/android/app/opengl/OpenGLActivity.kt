@@ -1,4 +1,4 @@
-package com.wuba.android.app.opengl
+package com.dengtuo.android.app.opengl
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
-import com.wuba.android.app.R
+import com.dengtuo.android.app.R
 
 class OpenGLActivity : AppCompatActivity() {
 

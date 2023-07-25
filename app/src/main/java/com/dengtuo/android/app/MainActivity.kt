@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.dengtuo.android.app.opengl.OpenGLActivity
 import com.dengtuo.android.app.utis.ToastAbility
 import com.dengtuo.android.app.R
+import com.dengtuo.android.app.filament.PanoramaFilamentActivity
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -20,6 +21,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun initView() {
         findViewById<View>(R.id.tv_opengl)?.setOnClickListener(this)
+        findViewById<View>(R.id.tv_filament)?.setOnClickListener(this)
     }
 
     private val scanLauncher =
@@ -32,9 +34,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        when(v?.id){
-            R.id.tv_opengl ->{
+        when (v?.id) {
+            R.id.tv_opengl -> {
                 val intent = Intent(this, OpenGLActivity::class.java)
+                startActivity(intent)
+            }
+
+            R.id.tv_filament -> {
+                val intent = Intent(this, PanoramaFilamentActivity::class.java)
                 startActivity(intent)
             }
         }

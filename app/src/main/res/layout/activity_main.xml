@@ -17,13 +17,25 @@
                 android:id="@+id/tv_opengl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:background="@color/color_4d4d4d"
                 android:gravity="center"
                 android:padding="10dp"
-                android:textColor="@color/white"
-                android:layout_margin="5dp"
                 android:text="OpenGL"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_filament"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@color/color_4d4d4d"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="filament-VR"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

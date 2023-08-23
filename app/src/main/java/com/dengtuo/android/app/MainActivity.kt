@@ -1,14 +1,18 @@
 package com.dengtuo.android.app
 
+import android.content.ComponentName
 import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.IBinder
+import android.os.SystemClock
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.dengtuo.android.app.filament.PanoramaFilamentActivity
 import com.dengtuo.android.app.opengl.OpenGLActivity
 import com.dengtuo.android.app.utis.ToastAbility
-import com.dengtuo.android.app.R
-import com.dengtuo.android.app.filament.PanoramaFilamentActivity
+import com.dengtuo.android.app.utis.log.LogAbility
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -22,6 +26,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun initView() {
         findViewById<View>(R.id.tv_opengl)?.setOnClickListener(this)
         findViewById<View>(R.id.tv_filament)?.setOnClickListener(this)
+        findViewById<View>(R.id.tv_scroll)?.setOnClickListener(this)
+        findViewById<View>(R.id.tv_soter)?.setOnClickListener(this)
     }
 
     private val scanLauncher =
@@ -44,6 +50,38 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 val intent = Intent(this, PanoramaFilamentActivity::class.java)
                 startActivity(intent)
             }
+
+            R.id.tv_scroll -> {
+                val intent = Intent(this, ScrollViewActivity::class.java)
+                startActivity(intent)
+            }
+
+            R.id.tv_soter -> {
+                bindSoterService()
+            }
         }
+    }
+
+    private fun bindSoterService() {
+        val intent = Intent()
+        intent.action = "com.tencent.soter.soterserver.ISoterService"
+        intent.setPackage("com.tencent.soter.soterserver")
+        bindService(intent, mSoterServiceConnection, BIND_AUTO_CREATE)
+    }
+
+
+    private val mSoterServiceConnection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            LogAbility.d(TAG,"onServiceConnected")
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+            LogAbility.d(TAG,"onServiceDisconnected")
+        }
+
+    }
+
+    companion object{
+        private const val TAG = "MainActivity"
     }
 }

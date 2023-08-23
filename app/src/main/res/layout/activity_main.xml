@@ -36,6 +36,30 @@
                 android:text="filament-VR"
                 android:textAlignment="center"
                 android:textColor="@color/white" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_scroll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@color/color_4d4d4d"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="filament-VR"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_soter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@color/color_4d4d4d"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Soter"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

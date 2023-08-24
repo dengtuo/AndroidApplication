@@ -9,7 +9,7 @@ import javax.microedition.khronos.opengles.GL10
 import kotlin.math.cos
 import kotlin.math.sin
 
-class GLSurfaceRenderer : GLSurfaceView.Renderer {
+class SkySphereGLRenderer : GLSurfaceView.Renderer {
 
     private var mUVHandle = 0
     private var mTextureHandle = 0
@@ -33,6 +33,8 @@ class GLSurfaceRenderer : GLSurfaceView.Renderer {
     private var mCameraDirectionY = 0.0f
     private var mCameraDirectionZ = 1.0f
     private var mCameraFovDegree = 100f
+    private var mVertexShaderCode = ""
+    private var mFragmentShaderCode = ""
 
     private var mBitmap: Bitmap? = null
 
@@ -40,13 +42,17 @@ class GLSurfaceRenderer : GLSurfaceView.Renderer {
         mBitmap = bitmap
     }
 
+    fun initShader(vertexShaderCode: String, fragmentShaderCode: String) {
+        mVertexShaderCode = vertexShaderCode
+        mFragmentShaderCode = fragmentShaderCode
+    }
+
     override fun onSurfaceCreated(gl: GL10, config: EGLConfig) {
         mGLProgram = GLES20.glCreateProgram()
-
-        val vertexShader = OpenGLAbility.compileGLShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode)
+        val vertexShader = OpenGLAbility.compileGLShader(GLES20.GL_VERTEX_SHADER, mVertexShaderCode)
         val fragmentShader = OpenGLAbility.compileGLShader(
             GLES20.GL_FRAGMENT_SHADER,
-            fragmentShaderCode
+            mFragmentShaderCode
         )
         OpenGLAbility.linkGLProgram(mGLProgram, vertexShader, fragmentShader)
         GLES20.glUseProgram(mGLProgram)
@@ -160,29 +166,5 @@ class GLSurfaceRenderer : GLSurfaceView.Renderer {
     companion object {
         private const val Z_NEAR = 0.1f
         private const val Z_FAR = 100.0f
-        private val vertexShaderCode = """
-            attribute vec4 aPosition;
-            uniform mat4 uProjectionMatrix;
-            uniform mat4 uViewMatrix;
-            uniform mat4 uModelMatrix;
-            varying vec2 vUV;
-            attribute vec2 aUV;
-            void main() {
-              gl_Position = uProjectionMatrix * uViewMatrix * uModelMatrix * aPosition;
-              vUV = aUV;
-            }
-        """.trimIndent()
-
-        /**
-         * vUV 纹理坐标
-         */
-        private val fragmentShaderCode = """
-            precision mediump float;
-            varying vec2 vUV;
-            uniform sampler2D uTexture;
-            void main(){
-                gl_FragColor = texture2D(uTexture, vUV);
-            }
-        """.trimIndent()
     }
 }

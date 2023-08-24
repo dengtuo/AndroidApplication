@@ -8,11 +8,14 @@ import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
+import com.dengtuo.android.app.R
+import com.dengtuo.android.app.utis.FileAbility
 import kotlin.math.abs
 
 class GLSurfaceRenderView : GLSurfaceView {
 
-    private var mGLSurfaceRenderer: GLSurfaceRenderer? = null
+    private var mSkySphereGLRenderer: SkySphereGLRenderer? = null
+    private var mCubeBoxGLRenderer: CubeBoxGLRenderer? = null
     private var mGestureDetector: GestureDetector? = null
     private var mScaleGestureDetector: ScaleGestureDetector? = null
 
@@ -48,7 +51,7 @@ class GLSurfaceRenderView : GLSurfaceView {
 //        return super.onTouchEvent(event)
 //    }
     fun setBitmap(bitmap: Bitmap) {
-        mGLSurfaceRenderer?.setBitmap(bitmap)
+        mSkySphereGLRenderer?.setBitmap(bitmap)
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -65,8 +68,8 @@ class GLSurfaceRenderView : GLSurfaceView {
 
     private fun initialize() {
         setEGLContextClientVersion(2)
-        mGLSurfaceRenderer = GLSurfaceRenderer()
-        setRenderer(mGLSurfaceRenderer)
+        initSkySphere()
+      //  initCubeBox()
         isLongClickable = true
         mGestureDetector = GestureDetector(context, object : GestureDetector.OnGestureListener {
             private val SWIPE_MAX_OF_PATH_X = 100
@@ -106,7 +109,7 @@ class GLSurfaceRenderView : GLSurfaceView {
                     if (abs(diffY) < Constants.THRESHOLD_SCROLL_Y) {
                         diffY = 0.0f
                     }
-                    mGLSurfaceRenderer?.rotation(diffX, -diffY)
+                    mSkySphereGLRenderer?.rotation(diffX, -diffY)
                     ret = true
                 }
                 return ret
@@ -125,11 +128,27 @@ class GLSurfaceRenderView : GLSurfaceView {
             object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
                 override fun onScale(detector: ScaleGestureDetector): Boolean {
                     val scale = detector.scaleFactor
-                    mGLSurfaceRenderer?.scale(scale)
+                    mSkySphereGLRenderer?.scale(scale)
                     return true
                 }
             })
         return
+    }
+
+    private fun initSkySphere() {
+
+        val vertexShader = FileAbility.readAssetsString(context, "shader/sky_sphere_vertex_shader.glsl")?:return
+        val fragmentShader =
+            FileAbility.readAssetsString(context, "shader/sky_sphere_fragment_shader.glsl")?:return
+        val skySphereGLRenderer = SkySphereGLRenderer()
+        skySphereGLRenderer.initShader(vertexShader, fragmentShader)
+        mSkySphereGLRenderer = skySphereGLRenderer
+        setRenderer(skySphereGLRenderer)
+    }
+
+    private fun initCubeBox() {
+        mCubeBoxGLRenderer = CubeBoxGLRenderer()
+        setRenderer(mCubeBoxGLRenderer)
     }
 
 
@@ -144,7 +163,7 @@ class GLSurfaceRenderView : GLSurfaceView {
                 //双指以上放弃
                 return false
             }
-            mGLSurfaceRenderer?.rotation(distanceX, distanceY)
+            mSkySphereGLRenderer?.rotation(distanceX, distanceY)
             return true
         }
     }

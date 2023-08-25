@@ -44,6 +44,18 @@ class CubeBox {
         // Bottom
         6, 2, 7,
         7, 2, 3
+//        0,3,1,
+//        0,2,3,
+//        1,5,4,
+//        1,4,0,
+//        4,2,0,
+//        4,6,2,
+//        5,6,4,
+//        5,7,6,
+//        2,6,7,
+//        2,7,3,
+//        1,7,5,
+//        1,3,7
     )
 
     private val cubeIndexs2 = byteArrayOf( // Front
@@ -80,7 +92,7 @@ class CubeBox {
 
     companion object {
         private const val COORDS_PER_VERTEX = 3
-        private const val COORDS_INDEX_COUNT = 3
+        private const val COORDS_INDEX_COUNT = 36
 
     }
 }

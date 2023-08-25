@@ -14,8 +14,8 @@ class CubeBoxGLRenderer : GLSurfaceView.Renderer {
 
     companion object{
         private const val TAG = "TAG"
-        private const val Z_NEAR = 0.1f
-        private const val Z_FAR = 100.0f
+        private const val Z_NEAR = 0.001f
+        private const val Z_FAR = 1000.0f
     }
 
     private var mCubeBox:CubeBox? = null
@@ -42,7 +42,7 @@ class CubeBoxGLRenderer : GLSurfaceView.Renderer {
     private val mCameraPositionZ = 0.0f
     private var mCameraDirectionX = 0.0f
     private var mCameraDirectionY = 0.0f
-    private var mCameraDirectionZ = 1.0f
+    private var mCameraDirectionZ = -1.0f
     private var mCameraFovDegree = 100f
 
     private var mRotationAngleY = 0.0
@@ -79,6 +79,27 @@ class CubeBoxGLRenderer : GLSurfaceView.Renderer {
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
         mScreenAspectRatio = width.toFloat() / height
         GLES20.glViewport(0, 0, width, height)
+        Matrix.setLookAtM(
+            mViewMatrix,
+            0,
+            mCameraPositionX,
+            mCameraPositionY,
+            mCameraPositionZ,
+            mCameraDirectionX,
+            mCameraDirectionY,
+            mCameraDirectionZ,
+            0.0f,
+            1.0f,
+            0.0f
+        )
+        Matrix.perspectiveM(
+            mProjectionMatrix,
+            0,
+            mCameraFovDegree,
+            mScreenAspectRatio,
+            Z_NEAR,
+            Z_FAR
+        )
     }
 
     override fun onDrawFrame(gl: GL10?) {
@@ -110,6 +131,7 @@ class CubeBoxGLRenderer : GLSurfaceView.Renderer {
         Matrix.setIdentityM(mModelMatrix, 0)
         Matrix.setIdentityM(mViewMatrix, 0)
         Matrix.setIdentityM(mProjectionMatrix, 0)
+
         //设置矩阵转化 视角
         Matrix.setLookAtM(
             mViewMatrix,

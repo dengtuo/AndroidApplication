@@ -102,6 +102,20 @@ class SkySphereGLRenderer : GLSurfaceView.Renderer {
             mTextureId = GLAbility.createTexture(bitmap)
         }
 
+        //矩阵计算
+        calculateMatrix()
+        //将矩阵值传入shader
+        GLES20.glUniformMatrix4fv(mProjectionMatrixHandle, 1, false, mProjectionMatrix, 0)
+        GLES20.glUniformMatrix4fv(mViewMatrixHandle, 1, false, mViewMatrix, 0)
+        GLES20.glUniformMatrix4fv(mModelMatrixHandle, 1, false, mModelMatrix, 0)
+
+        //draw
+        GLES20.glActiveTexture(GLES20.GL_TEXTURE0)
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureId)
+        mSkySphere.draw(mPositionHandle, mUVHandle)
+    }
+
+    private fun calculateMatrix() {
         mCameraDirectionX = (cos(mRotationAngleXZ) * cos(mRotationAngleY)).toFloat()
         mCameraDirectionY = sin(mRotationAngleY).toFloat()
         mCameraDirectionZ = (sin(mRotationAngleXZ) * cos(mRotationAngleY)).toFloat()
@@ -137,15 +151,6 @@ class SkySphereGLRenderer : GLSurfaceView.Renderer {
         Matrix.rotateM(mModelMatrix, 0, 90f, 1f, 0f, 0f)
         Matrix.rotateM(mModelMatrix, 0, 90f, 0f, 1f, 0f)
 
-        //将矩阵值传入shader
-        GLES20.glUniformMatrix4fv(mProjectionMatrixHandle, 1, false, mProjectionMatrix, 0)
-        GLES20.glUniformMatrix4fv(mViewMatrixHandle, 1, false, mViewMatrix, 0)
-        GLES20.glUniformMatrix4fv(mModelMatrixHandle, 1, false, mModelMatrix, 0)
-
-        //draw
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE0)
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureId)
-        mSkySphere.draw(mPositionHandle, mUVHandle)
     }
 
     fun rotation(xz: Float, y: Float) {

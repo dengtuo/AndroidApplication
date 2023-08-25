@@ -114,6 +114,7 @@ class GLSurfaceRenderView : GLSurfaceView {
                         diffY = 0.0f
                     }
                     mSkySphereGLRenderer?.rotation(diffX, -diffY)
+                    mCubeBoxGLRenderer?.rotation(diffX, -diffY)
                     ret = true
                 }
                 return ret

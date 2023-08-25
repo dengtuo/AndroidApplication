@@ -3,15 +3,22 @@ package com.dengtuo.android.app.opengl
 import android.graphics.Bitmap
 import android.opengl.GLES20
 import android.opengl.GLSurfaceView
+import android.opengl.Matrix
 import com.dengtuo.android.app.utis.log.LogAbility
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
+import kotlin.math.cos
+import kotlin.math.sin
 
 class CubeBoxGLRenderer : GLSurfaceView.Renderer {
 
     companion object{
         private const val TAG = "TAG"
+        private const val Z_NEAR = 0.1f
+        private const val Z_FAR = 100.0f
     }
+
+    private var mCubeBox:CubeBox? = null
 
     private var mGLProgram: Int = -1
     private var mScreenAspectRatio: Float = 0f
@@ -29,6 +36,17 @@ class CubeBoxGLRenderer : GLSurfaceView.Renderer {
     private val mProjectionMatrix = FloatArray(16)
     private val mViewMatrix = FloatArray(16)
     private val mModelMatrix = FloatArray(16)
+
+    private val mCameraPositionX = 0.0f
+    private val mCameraPositionY = 0.0f
+    private val mCameraPositionZ = 0.0f
+    private var mCameraDirectionX = 0.0f
+    private var mCameraDirectionY = 0.0f
+    private var mCameraDirectionZ = 1.0f
+    private var mCameraFovDegree = 100f
+
+    private var mRotationAngleY = 0.0
+    private var mRotationAngleXZ = 0.0
 
     // Cube纹理
     private var mTextureId = -1
@@ -55,6 +73,7 @@ class CubeBoxGLRenderer : GLSurfaceView.Renderer {
         mViewMatrixHandle = GLES20.glGetUniformLocation(mGLProgram, "uViewMatrix")
         mModelMatrixHandle = GLES20.glGetUniformLocation(mGLProgram, "uModelMatrix")
         mTextureHandle = GLES20.glGetUniformLocation(mGLProgram, "uTexture")
+        mCubeBox = CubeBox()
     }
 
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
@@ -69,10 +88,72 @@ class CubeBoxGLRenderer : GLSurfaceView.Renderer {
             }
             LogAbility.d(TAG,"")
         }
+        //矩阵计算
+        calculateMatrix()
+        //将矩阵值传入shader
+        GLES20.glUniformMatrix4fv(mProjectionMatrixHandle, 1, false, mProjectionMatrix, 0)
+        GLES20.glUniformMatrix4fv(mViewMatrixHandle, 1, false, mViewMatrix, 0)
+        GLES20.glUniformMatrix4fv(mModelMatrixHandle, 1, false, mModelMatrix, 0)
+        //draw
+        GLES20.glActiveTexture(GLES20.GL_TEXTURE0)
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_CUBE_MAP, mTextureId)
+        mCubeBox?.draw(mPositionHandle)
+    }
 
+    private fun calculateMatrix() {
+        mCameraDirectionX = (cos(mRotationAngleXZ) * cos(mRotationAngleY)).toFloat()
+        mCameraDirectionY = sin(mRotationAngleY).toFloat()
+        mCameraDirectionZ = (sin(mRotationAngleXZ) * cos(mRotationAngleY)).toFloat()
+
+        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT or GLES20.GL_DEPTH_BUFFER_BIT)
+        //初始化矩阵
+        Matrix.setIdentityM(mModelMatrix, 0)
+        Matrix.setIdentityM(mViewMatrix, 0)
+        Matrix.setIdentityM(mProjectionMatrix, 0)
+        //设置矩阵转化 视角
+        Matrix.setLookAtM(
+            mViewMatrix,
+            0,
+            mCameraPositionX,
+            mCameraPositionY,
+            mCameraPositionZ,
+            mCameraDirectionX,
+            mCameraDirectionY,
+            mCameraDirectionZ,
+            0.0f,
+            1.0f,
+            0.0f
+        )
+        Matrix.perspectiveM(
+            mProjectionMatrix,
+            0,
+            mCameraFovDegree,
+            mScreenAspectRatio,
+            Z_NEAR,
+            Z_FAR
+        )
+        Matrix.rotateM(mModelMatrix, 0, 90f, 0f, 0f, 1f)
+        Matrix.rotateM(mModelMatrix, 0, 90f, 1f, 0f, 0f)
+        Matrix.rotateM(mModelMatrix, 0, 90f, 0f, 1f, 0f)
     }
 
     fun setCubeBitmap(cubeBitmap: List<Bitmap>) {
         mCubeBitmap = cubeBitmap
+    }
+
+    fun rotation(xz: Float, y: Float) {
+        mRotationAngleXZ += xz.toDouble()
+        mRotationAngleY += y.toDouble()
+        if (mRotationAngleY > Math.PI / 2) {
+            mRotationAngleY = Math.PI / 2
+        }
+        if (mRotationAngleY < -(Math.PI / 2)) {
+            mRotationAngleY = -(Math.PI / 2)
+        }
+        return
+    }
+
+    fun scale(ratio: Float) {
+
     }
 }

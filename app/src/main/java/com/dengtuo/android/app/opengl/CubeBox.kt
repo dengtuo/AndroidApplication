@@ -1,5 +1,6 @@
 package com.dengtuo.android.app.opengl
 
+import android.opengl.GLES20
 import java.nio.ByteBuffer
 import java.nio.FloatBuffer
 
@@ -65,12 +66,21 @@ class CubeBox {
         mIndexBuffer = GLAbility.makeByteBufferFromArray(cubeIndexs)
     }
 
-    fun draw(mPositionHandle: Int, mUVHandle: Int) {
+    fun draw(mPositionHandle: Int) {
         mVertexBuffer ?: return
         mIndexBuffer ?: return
+        GLES20.glEnableVertexAttribArray(mPositionHandle)
+        GLES20.glVertexAttribPointer(
+            mPositionHandle, COORDS_PER_VERTEX,
+            GLES20.GL_FLOAT, false, 0, mVertexBuffer
+        )
+        GLES20.glDrawElements(GLES20.GL_TRIANGLES, COORDS_INDEX_COUNT, GLES20.GL_UNSIGNED_BYTE, mIndexBuffer)
+        GLES20.glDisableVertexAttribArray(mPositionHandle)
     }
 
     companion object {
-        private val COORDS_PER_VERTEX = 3
+        private const val COORDS_PER_VERTEX = 3
+        private const val COORDS_INDEX_COUNT = 3
+
     }
 }

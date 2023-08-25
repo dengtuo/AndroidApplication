@@ -133,9 +133,10 @@ object GLAbility {
             return -1
         }
         val textures = IntArray(1)
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE_CUBE_MAP)
+        textures[0] = -1
+        GLES20.glGenTextures(1, textures, 0)
+        // Linear filtering for minification and magnification
         GLES20.glBindTexture(GLES20.GL_TEXTURE_CUBE_MAP, textures[0])
-
         GLES20.glTexParameteri(
             GLES20.GL_TEXTURE_CUBE_MAP, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR
         )
@@ -160,7 +161,7 @@ object GLAbility {
         GLUtils.texImage2D(GLES20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, cubeBitmaps[4], 0)
         //后
         GLUtils.texImage2D(GLES20.GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, cubeBitmaps[5], 0)
-        return -1
+        return textures[0]
     }
 
     @JvmStatic

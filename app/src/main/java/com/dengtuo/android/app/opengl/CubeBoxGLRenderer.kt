@@ -1,22 +1,26 @@
 package com.dengtuo.android.app.opengl
 
+import android.graphics.Bitmap
 import android.opengl.GLES20
 import android.opengl.GLSurfaceView
+import com.dengtuo.android.app.utis.log.LogAbility
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
-class CubeBoxGLRenderer:GLSurfaceView.Renderer {
+class CubeBoxGLRenderer : GLSurfaceView.Renderer {
+
+    companion object{
+        private const val TAG = "TAG"
+    }
 
     private var mGLProgram: Int = -1
     private var mScreenAspectRatio: Float = 0f
-
 
 
     private var mVertexShaderCode = ""
     private var mFragmentShaderCode = ""
 
 
-    private var mUVHandle = 0
     private var mTextureHandle = 0
     private var mProjectionMatrixHandle = 0
     private var mViewMatrixHandle = 0
@@ -28,6 +32,8 @@ class CubeBoxGLRenderer:GLSurfaceView.Renderer {
 
     // Cube纹理
     private var mTextureId = -1
+
+    private var mCubeBitmap: List<Bitmap>? = null
 
     fun initShader(vertexShaderCode: String, fragmentShaderCode: String) {
         mVertexShaderCode = vertexShaderCode
@@ -44,8 +50,7 @@ class CubeBoxGLRenderer:GLSurfaceView.Renderer {
         )
         GLAbility.linkGLProgram(mGLProgram, vertexShader, fragmentShader)
         GLES20.glUseProgram(mGLProgram)
-        mUVHandle = GLES20.glGetAttribLocation(mGLProgram, "aUV")
-        mPositionHandle = GLES20.glGetAttribLocation(mGLProgram, "aPosition")
+        mPositionHandle = GLES20.glGetAttribLocation(mGLProgram, "a_Position")
         mProjectionMatrixHandle = GLES20.glGetUniformLocation(mGLProgram, "uProjectionMatrix")
         mViewMatrixHandle = GLES20.glGetUniformLocation(mGLProgram, "uViewMatrix")
         mModelMatrixHandle = GLES20.glGetUniformLocation(mGLProgram, "uModelMatrix")
@@ -58,8 +63,16 @@ class CubeBoxGLRenderer:GLSurfaceView.Renderer {
     }
 
     override fun onDrawFrame(gl: GL10?) {
-        if(mTextureId == -1){
-            mTextureId = GLAbility.createTexture()
+        if (mTextureId == -1) {
+            mCubeBitmap?.let {
+                mTextureId = GLAbility.createCubeMapTexture(it)
+            }
+            LogAbility.d(TAG,"")
         }
+
+    }
+
+    fun setCubeBitmap(cubeBitmap: List<Bitmap>) {
+        mCubeBitmap = cubeBitmap
     }
 }

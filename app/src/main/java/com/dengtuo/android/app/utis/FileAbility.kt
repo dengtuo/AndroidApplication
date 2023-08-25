@@ -15,6 +15,8 @@ object FileAbility {
         return readInputStream(inputStream)
     }
 
+
+
     @JvmStatic
     fun readInputStream(inputStream: InputStream?): String? {
         return inputStream?.use { input ->

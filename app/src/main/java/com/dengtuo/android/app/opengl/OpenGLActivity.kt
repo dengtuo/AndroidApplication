@@ -7,6 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.dengtuo.android.app.R
+import com.dengtuo.android.app.utis.BitmapAbility
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 
 class OpenGLActivity : AppCompatActivity() {
 
@@ -25,22 +28,44 @@ class OpenGLActivity : AppCompatActivity() {
     }
 
     private fun initData() {
-        Glide.with(this)
-            .asBitmap()
-            .override(4096, 4096/2)
-            .load("file:///android_asset/image/2.jpg")
-            .into(object : CustomTarget<Bitmap>() {
-                override fun onResourceReady(
-                    resource: Bitmap,
-                    transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?,
-                ) {
-                    mGLSurfaceRenderView?.setBitmap(resource)
-                }
+       loadCubeBitmap()
+    }
 
-                override fun onLoadCleared(placeholder: Drawable?) {
+    private fun loadSkySphere(){
+        runBlocking(Dispatchers.IO){
+            val bitmap = BitmapAbility.decodeAssetsBitmap(this@OpenGLActivity,"image/2.jpg", Int.MAX_VALUE,
+                Int.MAX_VALUE)
+            bitmap?.let { mGLSurfaceRenderView?.setBitmap(it) }
+        }
+    }
 
-                }
+    private fun loadCubeBitmap(){
+        runBlocking(Dispatchers.IO){
+            val bitmaps = ArrayList<Bitmap>()
 
-            })
+            var bitmap = BitmapAbility.decodeAssetsBitmap(this@OpenGLActivity,"image/left.jpg", Int.MAX_VALUE,
+                Int.MAX_VALUE)
+            bitmap?.let { bitmaps.add(it) }
+            bitmap = BitmapAbility.decodeAssetsBitmap(this@OpenGLActivity,"image/right.jpg", Int.MAX_VALUE,
+                Int.MAX_VALUE)
+            bitmap?.let { bitmaps.add(it) }
+
+            bitmap = BitmapAbility.decodeAssetsBitmap(this@OpenGLActivity,"image/bottom.jpg", Int.MAX_VALUE,
+                Int.MAX_VALUE)
+            bitmap?.let { bitmaps.add(it) }
+
+            bitmap = BitmapAbility.decodeAssetsBitmap(this@OpenGLActivity,"image/top.jpg", Int.MAX_VALUE,
+                Int.MAX_VALUE)
+            bitmap?.let { bitmaps.add(it) }
+
+            bitmap = BitmapAbility.decodeAssetsBitmap(this@OpenGLActivity,"image/front.jpg", Int.MAX_VALUE,
+                Int.MAX_VALUE)
+            bitmap?.let { bitmaps.add(it) }
+
+            bitmap = BitmapAbility.decodeAssetsBitmap(this@OpenGLActivity,"image/back.jpg", Int.MAX_VALUE,
+                Int.MAX_VALUE)
+            bitmap?.let { bitmaps.add(it) }
+            mGLSurfaceRenderView?.setCubeBitmap(bitmaps)
+        }
     }
 }

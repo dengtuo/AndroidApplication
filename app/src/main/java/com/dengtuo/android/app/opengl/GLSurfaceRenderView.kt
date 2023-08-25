@@ -54,6 +54,10 @@ class GLSurfaceRenderView : GLSurfaceView {
         mSkySphereGLRenderer?.setBitmap(bitmap)
     }
 
+    fun setCubeBitmap(cubeBitmap: List<Bitmap>){
+        mCubeBoxGLRenderer?.setCubeBitmap(cubeBitmap)
+    }
+
     override fun onTouchEvent(event: MotionEvent): Boolean {
         var ret = false
         mScaleGestureDetector?.onTouchEvent(event)
@@ -68,8 +72,8 @@ class GLSurfaceRenderView : GLSurfaceView {
 
     private fun initialize() {
         setEGLContextClientVersion(2)
-        initSkySphere()
-        //  initCubeBox()
+//        initSkySphere()
+          initCubeBox()
         isLongClickable = true
         mGestureDetector = GestureDetector(context, object : GestureDetector.OnGestureListener {
             private val SWIPE_MAX_OF_PATH_X = 100

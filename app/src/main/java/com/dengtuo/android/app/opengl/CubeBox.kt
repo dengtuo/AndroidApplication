@@ -1,6 +1,12 @@
 package com.dengtuo.android.app.opengl
 
+import java.nio.ByteBuffer
+import java.nio.FloatBuffer
+
 class CubeBox {
+
+    private var mVertexBuffer: FloatBuffer? = null
+    private var mIndexBuffer: ByteBuffer? = null
 
     private val cubeCoords = floatArrayOf(
         -1f, 1f, 1f,  // (0) Top-left near
@@ -53,4 +59,18 @@ class CubeBox {
         6, 2, 7,
         7, 2, 3
     )
+
+    init {
+        mVertexBuffer = GLAbility.makeFloatBufferFromArray(cubeCoords)
+        mIndexBuffer = GLAbility.makeByteBufferFromArray(cubeIndexs)
+    }
+
+    fun draw(mPositionHandle: Int, mUVHandle: Int) {
+        mVertexBuffer ?: return
+        mIndexBuffer ?: return
+    }
+
+    companion object {
+        private val COORDS_PER_VERTEX = 3
+    }
 }

@@ -69,7 +69,7 @@ class GLSurfaceRenderView : GLSurfaceView {
     private fun initialize() {
         setEGLContextClientVersion(2)
         initSkySphere()
-      //  initCubeBox()
+        //  initCubeBox()
         isLongClickable = true
         mGestureDetector = GestureDetector(context, object : GestureDetector.OnGestureListener {
             private val SWIPE_MAX_OF_PATH_X = 100
@@ -137,9 +137,11 @@ class GLSurfaceRenderView : GLSurfaceView {
 
     private fun initSkySphere() {
 
-        val vertexShader = FileAbility.readAssetsString(context, "shader/sky_sphere_vertex_shader.glsl")?:return
+        val vertexShader =
+            FileAbility.readAssetsString(context, "shader/sky_sphere_vertex_shader.glsl") ?: return
         val fragmentShader =
-            FileAbility.readAssetsString(context, "shader/sky_sphere_fragment_shader.glsl")?:return
+            FileAbility.readAssetsString(context, "shader/sky_sphere_fragment_shader.glsl")
+                ?: return
         val skySphereGLRenderer = SkySphereGLRenderer()
         skySphereGLRenderer.initShader(vertexShader, fragmentShader)
         mSkySphereGLRenderer = skySphereGLRenderer
@@ -147,7 +149,13 @@ class GLSurfaceRenderView : GLSurfaceView {
     }
 
     private fun initCubeBox() {
-        mCubeBoxGLRenderer = CubeBoxGLRenderer()
+        val vertexShader =
+            FileAbility.readAssetsString(context, "shader/cube_box_vertex_shader.glsl") ?: return
+        val fragmentShader =
+            FileAbility.readAssetsString(context, "shader/cube_box_fragment_shader.glsl") ?: return
+        val cubeBoxGLRenderer = CubeBoxGLRenderer()
+        cubeBoxGLRenderer.initShader(vertexShader, fragmentShader)
+        mCubeBoxGLRenderer = cubeBoxGLRenderer
         setRenderer(mCubeBoxGLRenderer)
     }
 

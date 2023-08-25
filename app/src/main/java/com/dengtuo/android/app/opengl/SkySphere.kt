@@ -102,8 +102,8 @@ class SkySphere(private val radius: Float) {
             vAngle += angleSpan
         }
         mVerticesCount = vertices.size / 3
-        mVertices = makeFloatBufferFromArray(vertices.toFloatArray())
-        mTextureCoords = makeFloatBufferFromArray(textureVertixs.toFloatArray())
+        mVertices = GLAbility.makeFloatBufferFromArray(vertices.toFloatArray())
+        mTextureCoords = GLAbility.makeFloatBufferFromArray(textureVertixs.toFloatArray())
     }
 
 
@@ -179,8 +179,8 @@ class SkySphere(private val radius: Float) {
             vAngle += angleSpan
         }
         mVerticesCount = vertices.size / 3
-        mVertices = makeFloatBufferFromArray(vertices.toFloatArray())
-        mTextureCoords = makeFloatBufferFromArray(textureVertixs.toFloatArray())
+        mVertices = GLAbility.makeFloatBufferFromArray(vertices.toFloatArray())
+        mTextureCoords = GLAbility.makeFloatBufferFromArray(textureVertixs.toFloatArray())
     }
 
     fun draw(mPositionHandle: Int, mUVHandle: Int) {
@@ -195,14 +195,6 @@ class SkySphere(private val radius: Float) {
         GLES20.glDisableVertexAttribArray(mUVHandle)
     }
 
-
-    private fun makeFloatBufferFromArray(array: FloatArray): FloatBuffer {
-        val fb = ByteBuffer.allocateDirect(array.size * java.lang.Float.SIZE)
-            .order(ByteOrder.nativeOrder()).asFloatBuffer()
-        fb.put(array)
-        fb.position(0)
-        return fb
-    }
 
 
     private fun convertToFloatBuffer(data: ArrayList<Float>): FloatBuffer {

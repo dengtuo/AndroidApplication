@@ -48,13 +48,14 @@ class SkySphereGLRenderer : GLSurfaceView.Renderer {
     }
 
     override fun onSurfaceCreated(gl: GL10, config: EGLConfig) {
+        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f)
         mGLProgram = GLES20.glCreateProgram()
-        val vertexShader = OpenGLAbility.compileGLShader(GLES20.GL_VERTEX_SHADER, mVertexShaderCode)
-        val fragmentShader = OpenGLAbility.compileGLShader(
+        val vertexShader = GLAbility.compileGLShader(GLES20.GL_VERTEX_SHADER, mVertexShaderCode)
+        val fragmentShader = GLAbility.compileGLShader(
             GLES20.GL_FRAGMENT_SHADER,
             mFragmentShaderCode
         )
-        OpenGLAbility.linkGLProgram(mGLProgram, vertexShader, fragmentShader)
+        GLAbility.linkGLProgram(mGLProgram, vertexShader, fragmentShader)
         GLES20.glUseProgram(mGLProgram)
         mUVHandle = GLES20.glGetAttribLocation(mGLProgram, "aUV")
         mPositionHandle = GLES20.glGetAttribLocation(mGLProgram, "aPosition")
@@ -62,7 +63,7 @@ class SkySphereGLRenderer : GLSurfaceView.Renderer {
         mViewMatrixHandle = GLES20.glGetUniformLocation(mGLProgram, "uViewMatrix")
         mModelMatrixHandle = GLES20.glGetUniformLocation(mGLProgram, "uModelMatrix")
         mTextureHandle = GLES20.glGetUniformLocation(mGLProgram, "uTexture")
-        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f)
+
     }
 
     override fun onSurfaceChanged(gl: GL10, width: Int, height: Int) {
@@ -98,7 +99,7 @@ class SkySphereGLRenderer : GLSurfaceView.Renderer {
             return
         }
         if (mTextureId == -1) {
-            mTextureId = OpenGLAbility.createTexture(bitmap)
+            mTextureId = GLAbility.createTexture(bitmap)
         }
 
         mCameraDirectionX = (cos(mRotationAngleXZ) * cos(mRotationAngleY)).toFloat()

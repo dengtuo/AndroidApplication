@@ -3,8 +3,14 @@ package com.dengtuo.android.app.opengl
 import android.graphics.Bitmap
 import android.opengl.GLES20
 import android.opengl.GLUtils
+import com.dengtuo.android.app.utis.log.LogAbility
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
+import java.nio.FloatBuffer
 
-object OpenGLAbility {
+object GLAbility {
+
+    private const val TAG = "OpenGLAbility"
 
     @JvmStatic
     fun compileGLShader(type: Int, shaderCode: String): Int {
@@ -48,27 +54,19 @@ object OpenGLAbility {
             /**配置纹理属性，主要是纹理采样边缘的处理 */
             //设置缩小过滤为使用纹理中坐标最接近的一个像素的颜色作为需要绘制的像素颜色
             GLES20.glTexParameterf(
-                GLES20.GL_TEXTURE_2D,
-                GLES20.GL_TEXTURE_MIN_FILTER,
-                GLES20.GL_NEAREST.toFloat()
+                GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_NEAREST.toFloat()
             )
             //设置放大过滤为使用纹理中坐标最接近的若干个颜色，通过加权平均算法得到需要绘制的像素颜色
             GLES20.glTexParameterf(
-                GLES20.GL_TEXTURE_2D,
-                GLES20.GL_TEXTURE_MAG_FILTER,
-                GLES20.GL_LINEAR.toFloat()
+                GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR.toFloat()
             )
             //设置环绕方向S，截取纹理坐标到[1/2n,1-1/2n]。将导致永远不会与border融合
             GLES20.glTexParameterf(
-                GLES20.GL_TEXTURE_2D,
-                GLES20.GL_TEXTURE_WRAP_S,
-                GLES20.GL_CLAMP_TO_EDGE.toFloat()
+                GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE.toFloat()
             )
             //设置环绕方向T，截取纹理坐标到[1/2n,1-1/2n]。将导致永远不会与border融合
             GLES20.glTexParameterf(
-                GLES20.GL_TEXTURE_2D,
-                GLES20.GL_TEXTURE_WRAP_T,
-                GLES20.GL_CLAMP_TO_EDGE.toFloat()
+                GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE.toFloat()
             )
             if (!bitmap.isRecycled) {
                 GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0)
@@ -94,15 +92,11 @@ object OpenGLAbility {
                 /**配置纹理属性，主要是纹理采样边缘的处理 */
                 //设置缩小过滤为使用纹理中坐标最接近的一个像素的颜色作为需要绘制的像素颜色
                 GLES20.glTexParameterf(
-                    GLES20.GL_TEXTURE_2D,
-                    GLES20.GL_TEXTURE_MIN_FILTER,
-                    GLES20.GL_NEAREST.toFloat()
+                    GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_NEAREST.toFloat()
                 )
                 //设置放大过滤为使用纹理中坐标最接近的若干个颜色，通过加权平均算法得到需要绘制的像素颜色
                 GLES20.glTexParameterf(
-                    GLES20.GL_TEXTURE_2D,
-                    GLES20.GL_TEXTURE_MAG_FILTER,
-                    GLES20.GL_LINEAR.toFloat()
+                    GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR.toFloat()
                 )
                 //设置环绕方向S，截取纹理坐标到[1/2n,1-1/2n]。将导致永远不会与border融合
                 GLES20.glTexParameterf(
@@ -118,15 +112,74 @@ object OpenGLAbility {
                 )
                 if (!bitmap.isRecycled) {
                     val dividedBitmap = Bitmap.createBitmap(
-                        bitmap,
-                        dividedWidth * textureIndex,
-                        0,
-                        dividedWidth,
-                        bitmap.height
+                        bitmap, dividedWidth * textureIndex, 0, dividedWidth, bitmap.height
                     )
                     GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, dividedBitmap, 0)
                 }
             }
         }
+    }
+
+    /**
+     * 左右 0 1
+     * 下上 2 3
+     * 前后 4 5
+     * @param array List<Bitmap>
+     * @return Int
+     */
+    fun createCubeMapTexture(cubeBitmaps: List<Bitmap>): Int {
+        if (cubeBitmaps.size != 6) {
+            LogAbility.d(TAG, "createCubeMapTexture")
+            return -1
+        }
+        val textures = IntArray(1)
+        GLES20.glActiveTexture(GLES20.GL_TEXTURE_CUBE_MAP)
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_CUBE_MAP, textures[0])
+
+        GLES20.glTexParameteri(
+            GLES20.GL_TEXTURE_CUBE_MAP, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR
+        )
+        GLES20.glTexParameteri(
+            GLES20.GL_TEXTURE_CUBE_MAP, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR
+        )
+        GLES20.glTexParameteri(
+            GLES20.GL_TEXTURE_CUBE_MAP, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE
+        )
+        GLES20.glTexParameteri(
+            GLES20.GL_TEXTURE_CUBE_MAP, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE
+        )
+        //左
+        GLUtils.texImage2D(GLES20.GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, cubeBitmaps[0], 0)
+        //右
+        GLUtils.texImage2D(GLES20.GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, cubeBitmaps[1], 0)
+        //下
+        GLUtils.texImage2D(GLES20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, cubeBitmaps[2], 0)
+        //上
+        GLUtils.texImage2D(GLES20.GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, cubeBitmaps[3], 0)
+        //前
+        GLUtils.texImage2D(GLES20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, cubeBitmaps[4], 0)
+        //后
+        GLUtils.texImage2D(GLES20.GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, cubeBitmaps[5], 0)
+        return -1
+    }
+
+    @JvmStatic
+    fun makeFloatBufferFromArray(array: FloatArray): FloatBuffer {
+        val fb =
+            ByteBuffer.allocateDirect(array.size * Float.SIZE_BYTES).order(ByteOrder.nativeOrder())
+                .asFloatBuffer()
+        fb.put(array)
+        fb.position(0)
+        return fb
+    }
+
+
+    @JvmStatic
+    fun makeByteBufferFromArray(array: ByteArray): ByteBuffer? {
+        val buffer = ByteBuffer.allocateDirect(array.size * Byte.SIZE_BITS)
+        buffer.order(ByteOrder.nativeOrder())
+        buffer.put(array)
+        buffer.position(0)
+        return buffer
     }
 }

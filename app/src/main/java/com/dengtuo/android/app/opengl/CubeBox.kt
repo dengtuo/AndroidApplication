@@ -44,31 +44,40 @@ class CubeBox {
         // Bottom
         6, 2, 7,
         7, 2, 3
-//        0,3,1,
-//        0,2,3,
-//        1,5,4,
-//        1,4,0,
-//        4,2,0,
-//        4,6,2,
-//        5,6,4,
-//        5,7,6,
-//        2,6,7,
-//        2,7,3,
-//        1,7,5,
-//        1,3,7
     )
 
-    private val cubeIndexs2 = byteArrayOf( // Front
+    private val colors = byteArrayOf(
+        // Front
         1, 3, 0,
-        0, 3, 2,  // Back
+        0, 3, 2,
+        // Back
         4, 6, 5,
-        5, 6, 7,  // Left
+        5, 6, 7,
+        // Left
         0, 2, 4,
-        4, 2, 6,  // Right
+        4, 2, 6,
+        // Right
         5, 7, 1,
-        1, 7, 3,  // Top
+        1, 7, 3,
+        // Top
         5, 1, 4,
-        4, 1, 0,  // Bottom
+        4, 1, 0,
+        // Bottom
+        6, 2, 7,
+        7, 2, 3
+    )
+
+    private val CubeIndex = byteArrayOf(
+        0, 2, 1,
+        1, 2, 3,  // Back
+        5, 7, 4,
+        4, 7, 6,  // Left
+        4, 6, 0,
+        0, 6, 2,  // Right
+        1, 3, 5,
+        5, 3, 7,  // Top
+        4, 0, 5,
+        5, 0, 1,  // Bottom
         6, 2, 7,
         7, 2, 3
     )

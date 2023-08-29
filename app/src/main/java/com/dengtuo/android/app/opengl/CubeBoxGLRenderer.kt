@@ -1,6 +1,7 @@
 package com.dengtuo.android.app.opengl
 
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.opengl.GLES20
 import android.opengl.GLSurfaceView
 import android.opengl.Matrix
@@ -9,16 +10,17 @@ import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 import kotlin.math.cos
 import kotlin.math.sin
+import kotlin.random.Random
 
 class CubeBoxGLRenderer : GLSurfaceView.Renderer {
 
-    companion object{
+    companion object {
         private const val TAG = "TAG"
         private const val Z_NEAR = 0.001f
         private const val Z_FAR = 1000.0f
     }
 
-    private var mCubeBox:CubeBox? = null
+    private var mCubeBox: CubeBox? = null
 
     private var mGLProgram: Int = -1
     private var mScreenAspectRatio: Float = 0f
@@ -102,12 +104,46 @@ class CubeBoxGLRenderer : GLSurfaceView.Renderer {
         )
     }
 
+    private fun createBitmap() {
+        /**
+         * 左右 0 1
+         * 下上 2 3
+         * 前后 4 5
+         * @param array List<Bitmap>
+         * @return Int
+         */
+        val bitmaps = ArrayList<Bitmap>()
+        val width = 255
+        val height = 255
+        val random = Random(1)
+        val colorArray = arrayOf(Color.BLUE,Color.WHITE,Color.YELLOW,Color.RED,Color.CYAN,Color.GREEN)
+        for (index in 0 until 6) {
+            val colors = ArrayList<Int>()
+            for (i in 0 until width) {
+                for (j in 0 until height) {
+//                    colors.add(Color.argb(255,random.nextInt(0,255),random.nextInt(0,255),random.nextInt(0,255)))
+                    colors.add(colorArray[index])
+                }
+            }
+            bitmaps.add(
+                Bitmap.createBitmap(
+                    colors.toIntArray(),
+                    width,
+                    height,
+                    Bitmap.Config.ARGB_8888
+                )
+            )
+        }
+        mCubeBitmap = bitmaps
+    }
+
     override fun onDrawFrame(gl: GL10?) {
         if (mTextureId == -1) {
+         //   createBitmap()
             mCubeBitmap?.let {
                 mTextureId = GLAbility.createCubeMapTexture(it)
             }
-            LogAbility.d(TAG,"")
+            LogAbility.d(TAG, "")
         }
         //矩阵计算
         calculateMatrix()
@@ -154,9 +190,6 @@ class CubeBoxGLRenderer : GLSurfaceView.Renderer {
             Z_NEAR,
             Z_FAR
         )
-        Matrix.rotateM(mModelMatrix, 0, 90f, 0f, 0f, 1f)
-        Matrix.rotateM(mModelMatrix, 0, 90f, 1f, 0f, 0f)
-        Matrix.rotateM(mModelMatrix, 0, 90f, 0f, 1f, 0f)
     }
 
     fun setCubeBitmap(cubeBitmap: List<Bitmap>) {

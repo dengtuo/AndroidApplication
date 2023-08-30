@@ -24,7 +24,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initView() {
-        findViewById<View>(R.id.tv_opengl)?.setOnClickListener(this)
+        findViewById<View>(R.id.tv_opengl_sky_sphere)?.setOnClickListener(this)
+        findViewById<View>(R.id.tv_opengl_cube_box)?.setOnClickListener(this)
         findViewById<View>(R.id.tv_filament)?.setOnClickListener(this)
         findViewById<View>(R.id.tv_scroll)?.setOnClickListener(this)
         findViewById<View>(R.id.tv_soter)?.setOnClickListener(this)
@@ -41,8 +42,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.tv_opengl -> {
+            R.id.tv_opengl_sky_sphere -> {
                 val intent = Intent(this, OpenGLActivity::class.java)
+                intent.putExtra(OpenGLActivity.RENDERER_TYPE_KEY,OpenGLActivity.SPHERE_TYPE)
+                startActivity(intent)
+            }
+
+            R.id.tv_opengl_cube_box -> {
+                val intent = Intent(this, OpenGLActivity::class.java)
+                intent.putExtra(OpenGLActivity.RENDERER_TYPE_KEY,OpenGLActivity.CUBE_TYPE)
                 startActivity(intent)
             }
 

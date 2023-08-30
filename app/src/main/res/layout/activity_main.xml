@@ -14,14 +14,26 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_opengl"
+                android:id="@+id/tv_opengl_sky_sphere"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:background="@color/color_4d4d4d"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="OpenGL"
+                android:text="OpenGL天空球-全景图"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_opengl_cube_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@color/color_4d4d4d"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="OpenGL立方体-六面体"
                 android:textAlignment="center"
                 android:textColor="@color/white" />
 

@@ -36,4 +36,11 @@ ext {
             lifecycleRuntimeKtx  : "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1",
             lifecycleLiveDataKtx : "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1",
     ]
+
+    kotlinXDependencies = [
+            kotlinxCoroutinesCoreJvm    : "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4",
+            kotlinxCoroutinesCore       : "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4",
+            kotlinxCoroutinesCoreAndroid: "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
+
+    ]
 }

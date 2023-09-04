@@ -5,11 +5,10 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
-import android.os.SystemClock
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.dengtuo.android.app.filament.PanoramaFilamentActivity
+import com.dengtuo.android.app.filament.CubeBoxActivity
 import com.dengtuo.android.app.opengl.OpenGLActivity
 import com.dengtuo.android.app.utis.ToastAbility
 import com.dengtuo.android.app.utis.log.LogAbility
@@ -55,7 +54,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             R.id.tv_filament -> {
-                val intent = Intent(this, PanoramaFilamentActivity::class.java)
+                val intent = Intent(this, CubeBoxActivity::class.java)
                 startActivity(intent)
             }
 

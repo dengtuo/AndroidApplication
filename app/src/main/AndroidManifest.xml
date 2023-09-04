@@ -30,7 +30,7 @@
             android:name=".ScrollViewActivity"
             android:exported="false" />
         <activity
-            android:name=".filament.PanoramaFilamentActivity"
+            android:name=".filament.CubeBoxActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

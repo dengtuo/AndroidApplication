@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".filament.PanoramaFilamentActivity">
+    tools:context=".filament.CubeBoxActivity">
     <SurfaceView
         android:id="@+id/view_surfaceView"
         android:layout_width="match_parent"

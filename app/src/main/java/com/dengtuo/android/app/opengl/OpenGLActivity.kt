@@ -48,7 +48,7 @@ class OpenGLActivity : AppCompatActivity() {
     private fun loadSkySphere() {
         runBlocking(Dispatchers.IO) {
             val bitmap = BitmapAbility.decodeAssetsBitmap(
-                this@OpenGLActivity, "image/2.jpg", Int.MAX_VALUE,
+                this@OpenGLActivity, "image/独立楼梯_其他2.jpg", Int.MAX_VALUE,
                 Int.MAX_VALUE
             )
             bitmap?.let { mGLSurfaceRenderView?.setBitmap(it) }

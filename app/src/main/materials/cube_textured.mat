@@ -1,0 +1,31 @@
+material {
+    name : Skybox,
+    parameters : [
+        {
+           type : samplerCubemap,
+           name : skybox
+        }
+    ],
+    variables : [
+         eyeDirection
+    ],
+    vertexDomain : device,
+    depthWrite : false,
+    shadingModel : unlit
+}
+
+fragment {
+    void material(inout MaterialInputs material) {
+        prepareMaterial(material);
+        float3 sky = texture(materialParams_skybox, variable_eyeDirection.xyz).rgb;
+        material.baseColor = vec4(sky, 1.0);
+    }
+}
+
+vertex {
+    void materialVertex(inout MaterialVertexInputs material) {
+        float3 p = getPosition().xyz;
+        float3 u = mulMat4x4Float3(getViewFromClipMatrix(), p).xyz;
+        material.eyeDirection.xyz = mulMat3x3Float3(getWorldFromViewMatrix(), u);
+    }
+}

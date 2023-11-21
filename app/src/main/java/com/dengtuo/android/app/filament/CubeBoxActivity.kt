@@ -30,12 +30,14 @@ import com.google.android.filament.Skybox
 import com.google.android.filament.SwapChain
 import com.google.android.filament.Texture
 import com.google.android.filament.Texture.PixelBufferDescriptor
+import com.google.android.filament.TextureSampler
 import com.google.android.filament.VertexBuffer
 import com.google.android.filament.View
 import com.google.android.filament.Viewport
 import com.google.android.filament.android.DisplayHelper
 import com.google.android.filament.android.FilamentHelper
 import com.google.android.filament.android.UiHelper
+import org.w3c.dom.Text
 import java.io.IOException
 import java.io.InputStream
 import java.nio.ByteBuffer
@@ -136,13 +138,14 @@ class CubeBoxActivity : AppCompatActivity() {
 
 
     private fun setupScene() {
+        val texture = loadTexture(mEngine)
         loadMaterial()
-        createMesh()
-        setupMaterial()
+        //createMesh()
+        setupMaterial(texture)
         val vertexBuffer = mVertexBuffer?:return
         val indexBuffer = mIndexBuffer?:return
 
-        val texture = loadTexture(mEngine)
+
         mSkybox = Skybox.Builder().environment(texture).build(mEngine)
         mScene?.skybox = mSkybox
 
@@ -157,22 +160,26 @@ class CubeBoxActivity : AppCompatActivity() {
             // Overall bounding box of the renderable
             .boundingBox(Box(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.01f))
             // Sets the mesh data of the first primitive
-            .geometry(0, RenderableManager.PrimitiveType.TRIANGLES, vertexBuffer, indexBuffer, 0, 3)
+           // .geometry(0, RenderableManager.PrimitiveType.TRIANGLES, vertexBuffer, indexBuffer, 0, 3)
             // Sets the material of the first primitive
             .material(0, material.defaultInstance)
             .build(mEngine, renderable)
 
         // Add the entity to the scene to render it
         mScene?.addEntity(renderable)
+
     }
 
-    private fun setupMaterial() {
+    private fun setupMaterial(texture:Texture) {
         // Create an instance of the material to set different parameters on it
         mMaterialInstance = mMaterial?.createInstance()
+        val sampler = TextureSampler()
+        sampler.anisotropy = 8.0f
+
         // Specify that our color is in sRGB so the conversion to linear
         // is done automatically for us. If you already have a linear color
         // you can pass it directly, or use Colors.RgbType.LINEAR
-        mMaterialInstance?.setParameter("baseColor", Colors.RgbType.SRGB, 0.71f, 0.0f, 0.0f)
+        mMaterialInstance?.setParameter("skybox",texture,sampler)
     }
 
     private var swapChain: SwapChain? = null

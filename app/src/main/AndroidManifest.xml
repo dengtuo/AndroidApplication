@@ -27,6 +27,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".CoroutineActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GridActivity"
+            android:exported="false" />
+        <activity
             android:name=".ScrollViewActivity"
             android:exported="false" />
         <activity

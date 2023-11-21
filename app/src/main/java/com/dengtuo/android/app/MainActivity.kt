@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.tv_filament)?.setOnClickListener(this)
         findViewById<View>(R.id.tv_scroll)?.setOnClickListener(this)
         findViewById<View>(R.id.tv_soter)?.setOnClickListener(this)
+        findViewById<View>(R.id.tv_coroutine)?.setOnClickListener(this)
     }
 
     private val scanLauncher =
@@ -59,11 +60,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             R.id.tv_scroll -> {
-                val intent = Intent(this, ScrollViewActivity::class.java)
+                val intent = Intent(this, GridActivity::class.java)
                 startActivity(intent)
             }
 
             R.id.tv_soter -> {
+                bindSoterService()
+            }
+            R.id.tv_coroutine -> {
                 bindSoterService()
             }
         }
